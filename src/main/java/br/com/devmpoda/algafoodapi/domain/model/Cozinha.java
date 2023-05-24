@@ -6,12 +6,16 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonRootName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
+@JsonRootName("gastronomia")
 public class Cozinha {
 
 	@EqualsAndHashCode.Include
@@ -20,6 +24,8 @@ public class Cozinha {
 	private Long id;
 	
 	@Column(nullable = false)
+	@JsonProperty("titulo")
+	//@JsonIgnore
 	private String nome;
 	
 }
