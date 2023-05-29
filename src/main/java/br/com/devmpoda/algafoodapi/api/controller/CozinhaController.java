@@ -4,12 +4,11 @@ import br.com.devmpoda.algafoodapi.api.model.CozinhasXmlWrapper;
 import br.com.devmpoda.algafoodapi.domain.model.Cozinha;
 import br.com.devmpoda.algafoodapi.domain.repository.CozinhaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.websocket.server.PathParam;
 import java.util.List;
@@ -30,9 +29,15 @@ public class CozinhaController {
         return new CozinhasXmlWrapper(cozinhaRepository.todas());
     }
 
+
     @GetMapping("/{id}")
-    public Cozinha buscar(@PathVariable Long id) {
-        return cozinhaRepository.porId(id);
+    public ResponseEntity<Cozinha> buscar(@PathVariable Long id) {
+        Cozinha cozinha = cozinhaRepository.porId(id);
+        if (cozinha != null) {
+            return ResponseEntity.ok(cozinhaRepository.porId(id));
+        }
+        return ResponseEntity.notFound().build();
+        //return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
 }
