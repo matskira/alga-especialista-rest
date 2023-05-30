@@ -40,4 +40,10 @@ public class CozinhaController {
         //return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public Cozinha adicionar(@RequestBody Cozinha cozinha){
+        return cozinhaRepository.adicionar(cozinha);
+    }
+
 }
