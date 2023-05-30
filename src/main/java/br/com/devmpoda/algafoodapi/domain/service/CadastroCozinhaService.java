@@ -11,7 +11,7 @@ public class CadastroCozinhaService {
     @Autowired
     CozinhaRepository cozinhaRepository;
 
-    public Cozinha salvat(Cozinha cozinha) {
+    public Cozinha salvar(Cozinha cozinha) {
         return cozinhaRepository.adicionar(cozinha);
     }
 }
