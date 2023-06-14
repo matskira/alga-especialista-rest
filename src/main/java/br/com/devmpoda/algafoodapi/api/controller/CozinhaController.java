@@ -1,6 +1,8 @@
 package br.com.devmpoda.algafoodapi.api.controller;
 
 import br.com.devmpoda.algafoodapi.api.model.CozinhasXmlWrapper;
+import br.com.devmpoda.algafoodapi.domain.exception.EntidadeEmUsoException;
+import br.com.devmpoda.algafoodapi.domain.exception.EntidadeNaoEncontradaException;
 import br.com.devmpoda.algafoodapi.domain.model.Cozinha;
 import br.com.devmpoda.algafoodapi.domain.repository.CozinhaRepository;
 import br.com.devmpoda.algafoodapi.domain.service.CadastroCozinhaService;
@@ -48,16 +50,16 @@ public class CozinhaController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Cozinha adicionar(@RequestBody Cozinha cozinha){
+    public Cozinha adicionar(@RequestBody Cozinha cozinha) {
         return cadastroCozinhaService.salvar(cozinha);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Cozinha> atualizar(@PathVariable Long id, @RequestBody Cozinha cozinhaBody){
+    public ResponseEntity<Cozinha> atualizar(@PathVariable Long id, @RequestBody Cozinha cozinhaBody) {
         Cozinha cozinhaRecuperada = cozinhaRepository.porId(id);
 
         //cozinhaRecuperada.setNome(cozinha.getNome());
-        if (cozinhaRecuperada != null){
+        if (cozinhaRecuperada != null) {
             BeanUtils.copyProperties(cozinhaBody, cozinhaRecuperada, "id");
             cozinhaRepository.adicionar(cozinhaRecuperada);
 
@@ -67,16 +69,13 @@ public class CozinhaController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Cozinha> excluir(@PathVariable Long id){
+    public ResponseEntity<Cozinha> excluir(@PathVariable Long id) {
         try {
-            Cozinha cozinhaRecuperada = cozinhaRepository.porId(id);
-
-            if (cozinhaRecuperada != null){
-                cozinhaRepository.remover(cozinhaRecuperada);
-                return ResponseEntity.noContent().build();
-            }
+            cadastroCozinhaService.excluir(id);
+            return ResponseEntity.noContent().build();
+        }catch (EntidadeNaoEncontradaException ex) {
             return ResponseEntity.notFound().build();
-        }catch(DataIntegrityViolationException ex){
+        } catch (EntidadeEmUsoException ex) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
     }
