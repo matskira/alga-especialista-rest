@@ -5,6 +5,7 @@ import br.com.devmpoda.algafoodapi.domain.model.Cozinha;
 import br.com.devmpoda.algafoodapi.domain.model.Restaurante;
 import br.com.devmpoda.algafoodapi.domain.repository.RestauranteRepository;
 import br.com.devmpoda.algafoodapi.domain.service.CadastroRestauranteService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,6 +45,18 @@ public class RestauranteController {
         }catch (EntidadeNaoEncontradaException e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }
+    }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody Restaurante restaurante) {
+        Restaurante restauranteRecuperado = restauranteRepository.porId(id);
+
+        if (restauranteRecuperado != null) {
+            BeanUtils.copyProperties(restaurante, restauranteRecuperado, "id");
+            cadastroRestauranteService.salvar(restauranteRecuperado);
+
+            return ResponseEntity.ok(restauranteRecuperado);
+        }
+        return ResponseEntity.notFound().build();
     }
 }
