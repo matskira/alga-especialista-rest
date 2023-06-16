@@ -32,7 +32,7 @@ public class RestauranteController {
     public ResponseEntity<Restaurante> buscar(@PathVariable Long id) {
         Restaurante restaurante = restauranteRepository.porId(id);
         if (restaurante != null) {
-            return ResponseEntity.ok(restauranteRepository.porId(id));
+            return ResponseEntity.ok(restaurante);
         }
         return ResponseEntity.notFound().build();
     }
