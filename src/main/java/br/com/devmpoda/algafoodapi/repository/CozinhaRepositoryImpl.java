@@ -23,7 +23,14 @@ public class CozinhaRepositoryImpl implements CozinhaRepository{
 	public List<Cozinha> todas(){
 		return EManager.createQuery("from Cozinha", Cozinha.class).getResultList();
 	}
-	
+
+	@Override
+	public List<Cozinha> porNome(String nome) {
+		return EManager.createQuery("from Cozinha where nome like :nome", Cozinha.class)
+				.setParameter("nome", "%" + nome + "%")
+				.getResultList();
+	}
+
 	@Override
 	public Cozinha porId(Long id){
 		return EManager.find(Cozinha.class, id);
