@@ -4,13 +4,14 @@ import br.com.devmpoda.algafoodapi.domain.exception.EntidadeNaoEncontradaExcepti
 import br.com.devmpoda.algafoodapi.domain.model.Estado;
 import br.com.devmpoda.algafoodapi.domain.repository.EstadoRepository;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
-@Component
+@Repository
 public class EstadoRepositoryImpl implements EstadoRepository {
 
 	@PersistenceContext
