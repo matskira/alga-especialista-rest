@@ -1,14 +1,10 @@
 package br.com.devmpoda.algafoodapi.domain.repository;
 
 import br.com.devmpoda.algafoodapi.domain.model.Estado;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface EstadoRepository {
+public interface EstadoRepository extends JpaRepository<Estado, Long> {
 
-	List<Estado> todas();
-	Estado porId(Long id);
-	Estado adicionar(Estado estado);
-	void remover(Long id);
-	
 }

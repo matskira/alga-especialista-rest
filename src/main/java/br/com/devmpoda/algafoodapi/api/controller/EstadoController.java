@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/estados")
@@ -27,14 +28,14 @@ public class EstadoController {
 
     @GetMapping
     public List<Estado> listar() {
-        return estadoRepository.todas();
+        return estadoRepository.findAll();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Estado> buscar(@PathVariable Long id) {
-        Estado estado = estadoRepository.porId(id);
-        if (estado != null) {
-            return ResponseEntity.ok(estado);
+        Optional<Estado> estado = estadoRepository.findById(id);
+        if (estado.isPresent()) {
+            return ResponseEntity.ok(estado.get());
         }
         return ResponseEntity.notFound().build();
     }
@@ -47,13 +48,13 @@ public class EstadoController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Estado> atualizar(@PathVariable Long id, @RequestBody Estado estadoBody) {
-        Estado estadoRecuperado = estadoRepository.porId(id);
+        Optional<Estado> estadoRecuperado = estadoRepository.findById(id);
 
-        if (estadoRecuperado != null) {
-            BeanUtils.copyProperties(estadoBody, estadoRecuperado, "id");
-            cadastrarEstadoService.salvar(estadoRecuperado);
+        if (estadoRecuperado.isPresent()) {
+            BeanUtils.copyProperties(estadoBody, estadoRecuperado.get(), "id");
+            cadastrarEstadoService.salvar(estadoRecuperado.get());
 
-            return ResponseEntity.ok(estadoRecuperado);
+            return ResponseEntity.ok(estadoRecuperado.get());
         }
         return ResponseEntity.notFound().build();
     }
