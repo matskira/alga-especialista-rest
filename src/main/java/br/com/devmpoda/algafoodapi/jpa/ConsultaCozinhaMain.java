@@ -13,7 +13,7 @@ public class ConsultaCozinhaMain {
 				.web(WebApplicationType.NONE).run(args); 
 		
 		CozinhaRepository cozinhaRepository = applicationContext.getBean(CozinhaRepository.class);;
-		cozinhaRepository.todas().stream().forEach(cozinha->{
+		cozinhaRepository.findAll().stream().forEach(cozinha->{
 			System.out.println("\n Número cozinha: "+cozinha.getId()+" Nome Cozinha: "+cozinha.getNome());
 		});
 	}
