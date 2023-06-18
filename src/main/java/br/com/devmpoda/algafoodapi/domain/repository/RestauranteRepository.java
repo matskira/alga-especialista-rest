@@ -6,12 +6,15 @@ import java.util.Optional;
 
 import br.com.devmpoda.algafoodapi.domain.model.Restaurante;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 public interface RestauranteRepository extends JpaRepository<Restaurante, Long> {
 
     List<Restaurante> findByTaxaFreteBetween(BigDecimal taxaInicial,BigDecimal taxaFinal);
 
-    List<Restaurante> findByNomeContainingAndCozinhaId(String nome, Long cozinhaId);
+    @Query("from Restaurante where nome like %:nome% and cozinha.id = :id")
+    List<Restaurante> consultarPorNomeECozinha(String nome, @Param("id") Long cozinhaId);
 
     Optional<Restaurante> findFirstByNomeContaining(String nome);
 

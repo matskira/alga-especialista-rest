@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import br.com.devmpoda.algafoodapi.domain.model.Cozinha;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import javax.swing.text.html.Option;
@@ -13,7 +14,8 @@ import javax.swing.text.html.Option;
 public interface CozinhaRepository extends JpaRepository<Cozinha, Long> {
 
 
-    List<Cozinha> findByNomeContaining(String nome);
+    @Query("from Cozinha where nome like %:nome%")
+    List<Cozinha> consultarPorNome(String nome);
 
     Optional<Cozinha> findCozinhaByNome(String nome);
 

@@ -24,7 +24,7 @@ public class TesteController {
 
     @GetMapping("/cozinhas/por-nome")
     public List<Cozinha> listarPorNome(@RequestParam String nome){
-        return cozinhaRepository.findByNomeContaining(nome);
+        return cozinhaRepository.consultarPorNome(nome);
     }
     @GetMapping("/cozinhas/unica-por-nome")
     public Optional<Cozinha> listarUmaPorNome(@RequestParam String nome){
@@ -43,7 +43,7 @@ public class TesteController {
 
     @GetMapping("/restaurantes/por-nome-cozinha")
     public List<Restaurante> listarRestaurantePorNomeCozinhaID(String nome, Long cozinhaId){
-        return restauranteRepository.findByNomeContainingAndCozinhaId(nome, cozinhaId);
+        return restauranteRepository.consultarPorNomeECozinha(nome, cozinhaId);
     }
 
     @GetMapping("/restaurantes/top2-por-nome")
