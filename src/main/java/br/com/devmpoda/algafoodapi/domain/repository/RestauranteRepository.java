@@ -12,8 +12,6 @@ import org.springframework.data.repository.query.Param;
 public interface RestauranteRepository extends JpaRepository<Restaurante, Long> {
 
     List<Restaurante> findByTaxaFreteBetween(BigDecimal taxaInicial,BigDecimal taxaFinal);
-
-    @Query("from Restaurante where nome like %:nome% and cozinha.id = :id")
     List<Restaurante> consultarPorNomeECozinha(String nome, @Param("id") Long cozinhaId);
 
     Optional<Restaurante> findFirstByNomeContaining(String nome);
