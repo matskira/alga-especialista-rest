@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import javax.swing.text.html.Option;
 
 @Repository
-public interface CozinhaRepository extends JpaRepository<Cozinha, Long> {
+public interface CozinhaRepository extends CustomJpaRepository<Cozinha, Long> {
 
 
     @Query("from Cozinha where nome like %:nome%")

@@ -1,7 +1,10 @@
 package br.com.devmpoda.algafoodapi.infrastrcucture.repository;
 
 import br.com.devmpoda.algafoodapi.domain.model.Restaurante;
+import br.com.devmpoda.algafoodapi.domain.repository.RestauranteRepository;
 import br.com.devmpoda.algafoodapi.domain.repository.RestauranteRepositoryQueries;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
@@ -17,11 +20,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import static br.com.devmpoda.algafoodapi.infrastrcucture.repository.spec.RestauranteSpecifications.comFreteGratis;
+import static br.com.devmpoda.algafoodapi.infrastrcucture.repository.spec.RestauranteSpecifications.comNomeSemelhante;
+
 @Repository
 public class RestauranteRepositoryImpl implements RestauranteRepositoryQueries {
 
     @PersistenceContext
     private EntityManager em;
+
+    @Autowired @Lazy
+    private RestauranteRepository restauranteRepository;
 
     @Override
     public List<Restaurante> find(String nome, BigDecimal taxaInicial, BigDecimal taxaFinal) {
@@ -48,5 +57,10 @@ public class RestauranteRepositoryImpl implements RestauranteRepositoryQueries {
         criteria.where(predicates.toArray(new Predicate[0])); //Converte list de predicates para um array de predicates
 
         return em.createQuery(criteria).getResultList();
+    }
+
+    @Override
+    public List<Restaurante> findComFreteGratis(String nome) {
+        return restauranteRepository.findAll(comFreteGratis().and(comNomeSemelhante(nome)));
     }
 }
