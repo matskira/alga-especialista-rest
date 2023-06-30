@@ -14,6 +14,8 @@ INSERT INTO estado (id,nome) values (1,'São Paulo');
 INSERT INTO estado (id,nome) values (2,'Minas Gerais');
 
 
-
 INSERT INTO cidade (id,nome,estado_id) values (1,'São Paulo',1);
 INSERT INTO cidade (id,nome,estado_id) values (2,'Campinas',1);
+
+
+INSERT INTO restaurante_forma_pagamento (restaurante_id, forma_pagamento_id) VALUES (1, 1), (1, 2), (2, 1), (2, 2);
