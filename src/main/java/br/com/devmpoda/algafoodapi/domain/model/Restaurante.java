@@ -1,6 +1,7 @@
 package br.com.devmpoda.algafoodapi.domain.model;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.persistence.*;
@@ -8,6 +9,8 @@ import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -25,9 +28,22 @@ public class Restaurante {
 	@Column(name="taxa_frete", nullable = false)
 	private BigDecimal taxaFrete;
 
+
+
 	@ManyToOne
 	@JoinColumn(name="cozinha_id", nullable = false)
 	private Cozinha cozinha;
+
+
+	@JsonIgnore
+	@CreationTimestamp
+	@Column(name = "data_cadastro",nullable = false, columnDefinition = "datetime")
+	private LocalDateTime dataCriacao;
+
+	@JsonIgnore
+	@UpdateTimestamp
+	@Column(nullable = false, columnDefinition = "datetime")
+	private LocalDateTime dataAtualizacao;
 
 	@JsonIgnore
 	@Embedded
