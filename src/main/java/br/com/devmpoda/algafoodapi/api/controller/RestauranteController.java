@@ -1,6 +1,7 @@
 package br.com.devmpoda.algafoodapi.api.controller;
 
 import br.com.devmpoda.algafoodapi.domain.exception.EntidadeNaoEncontradaException;
+import br.com.devmpoda.algafoodapi.domain.exception.NegocioException;
 import br.com.devmpoda.algafoodapi.domain.model.Cozinha;
 import br.com.devmpoda.algafoodapi.domain.model.Restaurante;
 import br.com.devmpoda.algafoodapi.domain.repository.RestauranteRepository;
@@ -41,7 +42,11 @@ public class RestauranteController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Restaurante adicionar(@RequestBody Restaurante restaurante) {
-        return cadastroRestauranteService.salvar(restaurante);
+        try {
+            return cadastroRestauranteService.salvar(restaurante);
+        } catch (EntidadeNaoEncontradaException e) {
+            throw new NegocioException(e.getMessage());
+        }
     }
 
     @PutMapping("/{id}")
@@ -49,7 +54,11 @@ public class RestauranteController {
         Restaurante restauranteRecuperado = cadastroRestauranteService.buscarOuFalhar(id);
         BeanUtils.copyProperties(restaurante, restauranteRecuperado, "id",
                 "formasPagamento", "endereco", "dataCriacao", "dataAtualizacao");
-        return cadastroRestauranteService.salvar(restauranteRecuperado);
+        try {
+            return cadastroRestauranteService.salvar(restauranteRecuperado);
+        } catch (EntidadeNaoEncontradaException e) {
+            throw new NegocioException(e.getMessage());
+        }
     }
 
     @PatchMapping("/{id}")

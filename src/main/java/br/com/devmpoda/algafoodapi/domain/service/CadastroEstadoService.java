@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 public class CadastroEstadoService {
 
     public static final String MSG_ESTADO_NAO_EXISTE = "Não existe um cadastro de Estado com código %d";
+    public static final String MSG_ESTADO_EM_USO = "Estado de código %d não pode ser removida, pois está em uso";
     @Autowired
     EstadoRepository estadoRepository;
 
@@ -30,7 +31,7 @@ public class CadastroEstadoService {
                     String.format(MSG_ESTADO_NAO_EXISTE, id));
         }catch(DataIntegrityViolationException ex){
             throw new EntidadeEmUsoException(
-                    String.format("Estado de código %d não pode ser removida, pois está em uso", id));
+                    String.format(MSG_ESTADO_EM_USO, id));
         }
     }
 
