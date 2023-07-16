@@ -32,42 +32,26 @@ public class EstadoController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Estado> buscar(@PathVariable Long id) {
-        Optional<Estado> estado = estadoRepository.findById(id);
-        if (estado.isPresent()) {
-            return ResponseEntity.ok(estado.get());
-        }
-        return ResponseEntity.notFound().build();
+    public Estado buscar(@PathVariable Long id) {
+        return cadastrarEstadoService.buscarOuFalhar(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Estado> adicionar(@RequestBody Estado estado) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(cadastrarEstadoService.salvar(estado));
+    public Estado adicionar(@RequestBody Estado estado) {
+        return cadastrarEstadoService.salvar(estado);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Estado> atualizar(@PathVariable Long id, @RequestBody Estado estadoBody) {
-        Optional<Estado> estadoRecuperado = estadoRepository.findById(id);
+    public Estado atualizar(@PathVariable Long id, @RequestBody Estado estadoBody) {
+        Estado estadoRecuperado = cadastrarEstadoService.buscarOuFalhar(id);
 
-        if (estadoRecuperado.isPresent()) {
-            BeanUtils.copyProperties(estadoBody, estadoRecuperado.get(), "id");
-            cadastrarEstadoService.salvar(estadoRecuperado.get());
-
-            return ResponseEntity.ok(estadoRecuperado.get());
-        }
-        return ResponseEntity.notFound().build();
+        BeanUtils.copyProperties(estadoBody, estadoRecuperado, "id");
+        return cadastrarEstadoService.salvar(estadoRecuperado);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Estado> excluir(@PathVariable Long id) {
-        try {
-            cadastrarEstadoService.excluir(id);
-            return ResponseEntity.noContent().build();
-        }catch (EntidadeNaoEncontradaException ex) {
-            return ResponseEntity.notFound().build();
-        } catch (EntidadeEmUsoException ex) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
-        }
+    public void excluir(@PathVariable Long id) {
+        cadastrarEstadoService.excluir(id);
     }
 }
