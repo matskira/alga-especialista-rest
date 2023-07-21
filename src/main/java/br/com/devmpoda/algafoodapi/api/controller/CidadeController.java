@@ -2,6 +2,7 @@ package br.com.devmpoda.algafoodapi.api.controller;
 
 import br.com.devmpoda.algafoodapi.domain.exception.EntidadeEmUsoException;
 import br.com.devmpoda.algafoodapi.domain.exception.EntidadeNaoEncontradaException;
+import br.com.devmpoda.algafoodapi.domain.exception.EstadoNaoEncontradaException;
 import br.com.devmpoda.algafoodapi.domain.exception.NegocioException;
 import br.com.devmpoda.algafoodapi.domain.model.Cidade;
 import br.com.devmpoda.algafoodapi.domain.model.Cozinha;
@@ -45,7 +46,7 @@ public class CidadeController {
         try {
             return cadastroCidadeService.salvar(cidade);
         } catch (EntidadeNaoEncontradaException e) {
-            throw new NegocioException(e.getMessage());
+            throw new NegocioException(e.getMessage(), e);
         }
     }
 
@@ -55,9 +56,8 @@ public class CidadeController {
         BeanUtils.copyProperties(cidade, cidadeRecuperado, "id");
         try {
             return cadastroCidadeService.salvar(cidadeRecuperado);
-        } catch (
-                EntidadeNaoEncontradaException e) {
-            throw new NegocioException(e.getMessage());
+        } catch (EstadoNaoEncontradaException e) {
+            throw new NegocioException(e.getMessage(), e);
         }
 
     }
