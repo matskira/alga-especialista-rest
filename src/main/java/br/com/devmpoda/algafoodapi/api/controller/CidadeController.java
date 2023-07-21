@@ -1,5 +1,6 @@
 package br.com.devmpoda.algafoodapi.api.controller;
 
+import br.com.devmpoda.algafoodapi.api.exceptionhandler.Problema;
 import br.com.devmpoda.algafoodapi.domain.exception.EntidadeEmUsoException;
 import br.com.devmpoda.algafoodapi.domain.exception.EntidadeNaoEncontradaException;
 import br.com.devmpoda.algafoodapi.domain.exception.EstadoNaoEncontradaException;
@@ -17,6 +18,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -65,5 +68,25 @@ public class CidadeController {
     @DeleteMapping("/{id}")
     public void excluir(@PathVariable Long id) {
         cadastroCidadeService.excluir(id);
+    }
+
+    @ExceptionHandler(EntidadeNaoEncontradaException.class)
+    public ResponseEntity<?> handlerEntidadeNaoEncontradaException(EntidadeNaoEncontradaException e){
+        Problema problema = Problema.builder()
+                .dataHora(LocalDateTime.now())
+                .mensagem(e.getMessage())
+                .build();
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(problema);
+    }
+
+    @ExceptionHandler(NegocioException.class)
+    public ResponseEntity<?> handlerNegocioException(NegocioException e){
+        Problema problema = Problema.builder()
+                .dataHora(LocalDateTime.now())
+                .mensagem(e.getMessage())
+                .build();
+
+        return ResponseEntity.badRequest().body(e.getMessage());
     }
 }

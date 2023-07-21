@@ -2,6 +2,7 @@ package br.com.devmpoda.algafoodapi.api.controller;
 
 import br.com.devmpoda.algafoodapi.domain.exception.EntidadeEmUsoException;
 import br.com.devmpoda.algafoodapi.domain.exception.EntidadeNaoEncontradaException;
+import br.com.devmpoda.algafoodapi.domain.exception.EstadoNaoEncontradaException;
 import br.com.devmpoda.algafoodapi.domain.model.Cozinha;
 import br.com.devmpoda.algafoodapi.domain.model.Estado;
 import br.com.devmpoda.algafoodapi.domain.model.Restaurante;
@@ -53,5 +54,10 @@ public class EstadoController {
     @DeleteMapping("/{id}")
     public void excluir(@PathVariable Long id) {
         cadastrarEstadoService.excluir(id);
+    }
+
+    @ExceptionHandler(EstadoNaoEncontradaException.class)
+    public ResponseEntity<?> handlerEstadoNaoEncontradoException(EstadoNaoEncontradaException e){
+        return ResponseEntity.badRequest().body(e.getMessage());
     }
 }
