@@ -1,6 +1,7 @@
 package br.com.devmpoda.algafoodapi.domain.service;
 
 import br.com.devmpoda.algafoodapi.domain.exception.EntidadeNaoEncontradaException;
+import br.com.devmpoda.algafoodapi.domain.exception.RestauranteNaoEncontradaException;
 import br.com.devmpoda.algafoodapi.domain.model.Cozinha;
 import br.com.devmpoda.algafoodapi.domain.model.Restaurante;
 import br.com.devmpoda.algafoodapi.domain.repository.CozinhaRepository;
@@ -34,8 +35,7 @@ public class CadastroRestauranteService {
     }
 
     public Restaurante buscarOuFalhar(Long idRestaurante){
-        return restauranteRepository.findById(idRestaurante).orElseThrow(() -> new EntidadeNaoEncontradaException(
-                String.format(MSG_RESTAURANTE_NAO_EXISTE, idRestaurante)));
+        return restauranteRepository.findById(idRestaurante).orElseThrow(() -> new RestauranteNaoEncontradaException(idRestaurante));
     }
 
 }

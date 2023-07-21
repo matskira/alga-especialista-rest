@@ -1,5 +1,6 @@
 package br.com.devmpoda.algafoodapi.api.controller;
 
+import br.com.devmpoda.algafoodapi.domain.exception.CozinhaNaoEncontradaException;
 import br.com.devmpoda.algafoodapi.domain.exception.EntidadeNaoEncontradaException;
 import br.com.devmpoda.algafoodapi.domain.exception.NegocioException;
 import br.com.devmpoda.algafoodapi.domain.model.Cozinha;
@@ -44,8 +45,8 @@ public class RestauranteController {
     public Restaurante adicionar(@RequestBody Restaurante restaurante) {
         try {
             return cadastroRestauranteService.salvar(restaurante);
-        } catch (EntidadeNaoEncontradaException e) {
-            throw new NegocioException(e.getMessage());
+        } catch (CozinhaNaoEncontradaException e) {
+            throw new NegocioException(e.getMessage(), e);
         }
     }
 
@@ -56,8 +57,8 @@ public class RestauranteController {
                 "formasPagamento", "endereco", "dataCriacao", "dataAtualizacao");
         try {
             return cadastroRestauranteService.salvar(restauranteRecuperado);
-        } catch (EntidadeNaoEncontradaException e) {
-            throw new NegocioException(e.getMessage());
+        } catch (CozinhaNaoEncontradaException e) {
+            throw new NegocioException(e.getMessage(),e);
         }
     }
 
