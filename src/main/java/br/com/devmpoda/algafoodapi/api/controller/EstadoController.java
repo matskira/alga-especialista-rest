@@ -56,8 +56,5 @@ public class EstadoController {
         cadastrarEstadoService.excluir(id);
     }
 
-    @ExceptionHandler(EstadoNaoEncontradaException.class)
-    public ResponseEntity<?> handlerEstadoNaoEncontradoException(EstadoNaoEncontradaException e){
-        return ResponseEntity.badRequest().body(e.getMessage());
-    }
+
 }
