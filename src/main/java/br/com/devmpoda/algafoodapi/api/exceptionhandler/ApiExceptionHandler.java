@@ -71,7 +71,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         String path = joinPath(cause.getPath());
 
-        String detail = String.format("Propriedade '%s' não está habilitada como propriedade de corpa. Corrija ou remova essa propriedade e tente novamente.", path);
+        String detail = String.format("Propriedade '%s' não está habilitada como propriedade de corpo. Corrija ou remova essa propriedade e tente novamente.", path);
         Problem problem = createProblemBuilder(status, problemType, detail).build();
 
         return handleExceptionInternal(cause, problem, headers, status, request);
