@@ -8,6 +8,7 @@ public enum ProblemType {
     PROPRIEDADES_INVALIDAS("/propriedades-invalidas", "Propriedades inválidas"),
     MENSAGEM_INCOMPREENSIVEL("/mensagem-incompreensivel", "Mensagem incompreensível"),
     RECURSO_NAO_ENCONTRADO("/recurso-nao-encontrada", "Recurso não encontrada"),
+    DADOS_INVALIDOS("/dados-invalidos", "Dados inválidos"),
     ENTIDADE_EM_USO("/entidade-em-uso", "Entidade em uso"),
     PARAMETRO_INVALIDO("/parametro-invalido", "Parâmetro inválido"),
     ERRO_NEGOCIO("/erro-negocio", "Violação de regra de negócio"),

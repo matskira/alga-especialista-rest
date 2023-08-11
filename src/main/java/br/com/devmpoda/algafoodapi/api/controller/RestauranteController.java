@@ -1,9 +1,7 @@
 package br.com.devmpoda.algafoodapi.api.controller;
 
 import br.com.devmpoda.algafoodapi.domain.exception.CozinhaNaoEncontradaException;
-import br.com.devmpoda.algafoodapi.domain.exception.EntidadeNaoEncontradaException;
 import br.com.devmpoda.algafoodapi.domain.exception.NegocioException;
-import br.com.devmpoda.algafoodapi.domain.model.Cozinha;
 import br.com.devmpoda.algafoodapi.domain.model.Restaurante;
 import br.com.devmpoda.algafoodapi.domain.repository.RestauranteRepository;
 import br.com.devmpoda.algafoodapi.domain.service.CadastroRestauranteService;
@@ -13,17 +11,16 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/restaurantes")
@@ -47,7 +44,7 @@ public class RestauranteController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Restaurante adicionar(@RequestBody Restaurante restaurante) {
+    public Restaurante adicionar(@RequestBody @Valid Restaurante restaurante) {
         try {
             return cadastroRestauranteService.salvar(restaurante);
         } catch (CozinhaNaoEncontradaException e) {
@@ -56,7 +53,7 @@ public class RestauranteController {
     }
 
     @PutMapping("/{id}")
-    public Restaurante atualizar(@PathVariable Long id, @RequestBody Restaurante restaurante) {
+    public Restaurante atualizar(@PathVariable Long id, @RequestBody @Valid Restaurante restaurante) {
         Restaurante restauranteRecuperado = cadastroRestauranteService.buscarOuFalhar(id);
         BeanUtils.copyProperties(restaurante, restauranteRecuperado, "id",
                 "formasPagamento", "endereco", "dataCriacao", "dataAtualizacao");
