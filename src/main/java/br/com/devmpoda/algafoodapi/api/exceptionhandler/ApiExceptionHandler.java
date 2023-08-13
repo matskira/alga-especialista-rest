@@ -1,5 +1,6 @@
 package br.com.devmpoda.algafoodapi.api.exceptionhandler;
 
+import br.com.devmpoda.algafoodapi.core.validation.ValidacaoException;
 import br.com.devmpoda.algafoodapi.domain.exception.EntidadeEmUsoException;
 import br.com.devmpoda.algafoodapi.domain.exception.EntidadeNaoEncontradaException;
 import br.com.devmpoda.algafoodapi.domain.exception.NegocioException;
@@ -87,10 +88,13 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        return handleValdiationInternal(ex, ex.getBindingResult(),headers, status, request);
+    }
+
+    private ResponseEntity<Object> handleValdiationInternal(Exception ex,BindingResult bindingResult, HttpHeaders headers, HttpStatus status, WebRequest request) {
         ProblemType problemType = ProblemType.DADOS_INVALIDOS;
 
-        //Caputrarmos os erros de validação
-        BindingResult bindingResult = ex.getBindingResult();
+        //Caputrarmos os erros de validação\
 
         List<Problem.Object> problemObject = bindingResult.getAllErrors().stream()
                 .map(objectError -> {
@@ -217,6 +221,12 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         ProblemType problemType = ProblemType.ERRO_NEGOCIO;
         Problem problem = createProblemBuilder(status, problemType, detail).userMessage(detail).build();
         return this.handleExceptionInternal(e, problem, new HttpHeaders(), status, request);
+    }
+
+    @ExceptionHandler(ValidacaoException.class)
+    public ResponseEntity<?> handlerValidacaoException(ValidacaoException ex, WebRequest request) {
+
+        return handleValdiationInternal(ex, ex.getBindingResult(), new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 
     @ExceptionHandler(Exception.class)
