@@ -3,6 +3,7 @@ package br.com.devmpoda.algafoodapi.domain.model;
 import br.com.devmpoda.algafoodapi.core.validation.Groups;
 import br.com.devmpoda.algafoodapi.core.validation.Multiplo;
 import br.com.devmpoda.algafoodapi.core.validation.TaxaFrete;
+import br.com.devmpoda.algafoodapi.core.validation.ValorZeroIncluiDescricao;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -21,6 +22,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+
+@ValorZeroIncluiDescricao(valorField = "taxaFrete", descricaoField = "nome",
+		descricaoObrigatoria = "Frete Grátis")
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
@@ -40,7 +44,6 @@ public class Restaurante {
 	//@DecimalMin("0")
 	//@TaxaFrete
 	@PositiveOrZero
-	@Multiplo(numero = 5)
 	@NotNull
 	@Column(name="taxa_frete", nullable = false)
 	private BigDecimal taxaFrete;
